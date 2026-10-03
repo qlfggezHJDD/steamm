@@ -1,0 +1,18 @@
+services:
+  - type: cron
+    name: steam-dead-ranker
+    runtime: python
+    schedule: "0 8 * * 1"        # Every Monday at 08:00 UTC
+    buildCommand: pip install -r requirements.txt
+    startCommand: python scorer.py
+    envVars:
+      - key: DISCORD_WEBHOOK_URL
+        sync: false               # You paste this in the Render dashboard (kept secret)
+      - key: LINKS_FILE
+        value: steam_links.txt
+      - key: TOP_N
+        value: "30"               # How many games to post to Discord
+      - key: MAX_PER_RUN
+        value: "500"              # Games processed per run (~11 min at 1.5s/call)
+      - key: BATCH_DELAY_S
+        value: "1.5"
